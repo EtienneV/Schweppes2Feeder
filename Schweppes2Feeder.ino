@@ -1,5 +1,7 @@
 /*
- * MotorKnob
+ * Schweppes II Feeder
+ * 
+ * Permet de nourrir de façon automatisée Schweppes II
  *
  * A stepper motor follows the turns of a potentiometer
  * (or other sensor) on analog input 0.
