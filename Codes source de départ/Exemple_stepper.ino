@@ -62,7 +62,6 @@ void loop()
 
 int chronometre()
 {
-  long debut = now();
   int continuer = 1;
 
   while(continuer){
