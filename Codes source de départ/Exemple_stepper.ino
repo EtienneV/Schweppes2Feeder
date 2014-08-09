@@ -1,7 +1,6 @@
-#include <Time.h>  
-#include <Wire.h>  
-#include <DS1307RTC.h>  
-#include <LiquidCrystal.h>
+//#include <Time.h>  
+//#include <Wire.h>  
+//#include <DS1307RTC.h>  
 #include <Stepper.h>
 
 const int ledPin = 7;
@@ -19,34 +18,18 @@ long timerDemi = millis();
 const int stepsPerRevolution = 48; 
 Stepper myStepper(stepsPerRevolution, 2,3,4,5);  
 
-LiquidCrystal lcd(8, 9, 10, 11, 12, 13);
-
 void setup()  {
   //Serial.begin(9600);
 
-  lcd.begin(16, 2);
-  lcd.print("Horloge TIPE2013");
-  lcd.setCursor(0, 1);
-  lcd.print("Sync RTC ...");
-
   delay(2000);
 
-  setSyncProvider(RTC.get); 
-
-  lcd.clear();
-  lcd.print("Horloge TIPE2013");
-  lcd.setCursor(0, 1);
-  lcd.print("RTC OK !");
+  //setSyncProvider(RTC.get); 
 
   delay(1000);
 
   pinMode(ledPin, OUTPUT);
   pinMode(interPin, INPUT);
 
-  lcd.clear();
-  lcd.print("Il est:");
-  lcd.setCursor(0, 1);
-  lcd.print("Date:");
 }
 
 void loop()
@@ -65,25 +48,7 @@ void loop()
     if(digitalRead(baseDeTemps)){
       myStepper.step(1);
 
-      lcd.clear();
-      lcd.print("Il est:");
-      lcd.setCursor(0, 1);
-      lcd.print("Date:");
-
-      lcd.setCursor(8, 0);
-      lcd.print(hour());
-      lcd.print(":");
-      lcd.print(minute());
-      lcd.print(":");  
-      lcd.print(second());
       digitalWrite(ledPin, HIGH); 
-
-      lcd.setCursor(6, 1);
-      lcd.print(day());
-      lcd.print("/");
-      lcd.print(month());
-      lcd.print("/");  
-      lcd.print(year()); 
 
       timerSeconde = millis();
     }     
@@ -105,15 +70,6 @@ int chronometre()
       if(digitalRead(baseDeTemps)){
         myStepper.step(1);
 
-        lcd.clear();
-        lcd.print("Duree du TIPE :");
-        lcd.setCursor(0, 1);
-        lcd.print(hour(now() - debut));
-        lcd.print(":");
-        lcd.print(minute(now() - debut));
-        lcd.print(":");  
-        lcd.print(second(now() - debut));
-
         timerSeconde = millis();
       }     
 
@@ -128,14 +84,6 @@ int chronometre()
       buffInter = 1;
     }
     if((!etatInter) && (buffInter)){
-      lcd.clear();
-      lcd.print("Le TIPE a dure");
-      lcd.setCursor(0,1);
-      lcd.print(hour(now() - debut));
-      lcd.print(":");
-      lcd.print(minute(now() - debut));
-      lcd.print(":");  
-      lcd.print(second(now() - debut));
 
       buffInter = 0;
       attente = 1;
