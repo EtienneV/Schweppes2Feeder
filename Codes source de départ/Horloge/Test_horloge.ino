@@ -1,18 +1,12 @@
-/*
- * TimeAlarmExample.pde
- *
- * This example calls alarm functions at 8:30 am and at 5:45 pm (17:45)
- * and simulates turning lights on at night and off in the morning
- * A weekly timer is set for Saturdays at 8:30:30
- *
- * A timer is called every 15 seconds
- * Another timer is called once only after 10 seconds
- *
- * At startup the time is set to Jan 1 2011  8:29 am
- */
  
 #include <Time.h>
 #include <TimeAlarms.h>
+#include <AccelStepper.h>
+
+// Define a stepper and the pins it will use
+AccelStepper stepper; // Defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
+
+int positionActuelle = 0;
 
 void setup()
 {
@@ -24,13 +18,27 @@ void setup()
   Alarm.alarmRepeat(dowSaturday,8,30,30,WeeklyAlarm);  // 8:30:30 every Saturday 
 
  
-  Alarm.timerRepeat(15, Repeats);            // timer for every 15 seconds    
+  Alarm.timerRepeat(5, Repeats);            // timer for every 15 seconds    
   Alarm.timerOnce(10, OnceOnly);             // called once after 10 seconds 
+
+  stepper.setMaxSpeed(100);
+  stepper.setAcceleration(500);
+
+  pinMode(13, OUTPUT);
+  digitalWrite(13, HIGH);
 }
 
 void  loop(){  
   digitalClockDisplay();
-  Alarm.delay(1000); // wait one second between clock display
+  Alarm.delay(1); // wait one second between clock display
+
+  if (stepper.distanceToGo() == 0)
+    {
+    stepper.disableOutputs();   
+    digitalWrite(13, LOW);
+    }
+    
+    stepper.run();
 }
 
 // functions to be called when an alarm triggers:
@@ -51,7 +59,10 @@ void ExplicitAlarm(){
 }
 
 void Repeats(){
-  Serial.println("15 second timer");         
+  Serial.println("15 second timer"); 
+  stepper.enableOutputs();
+  positionActuelle = (positionActuelle + 24)%48;
+  stepper.moveTo(positionActuelle);        
 }
 
 void OnceOnly(){
