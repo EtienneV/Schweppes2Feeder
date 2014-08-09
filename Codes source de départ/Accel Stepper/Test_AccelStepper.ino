@@ -15,14 +15,15 @@ void setup()
 {  
 	stepper.setMaxSpeed(100);
 	stepper.setAcceleration(10);
+
+	stepper.moveTo(24);
 }
 
 void loop()
 {
     if (stepper.distanceToGo() == 0)
     {
-		delay(1000);
-		stepper.moveTo(24);
+		stepper.disableOutputs();		
     }
     
     stepper.run();
