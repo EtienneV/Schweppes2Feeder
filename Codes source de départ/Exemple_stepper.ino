@@ -12,18 +12,17 @@ void setup()  {
   //Serial.begin(9600);
 
   pinMode(13, OUTPUT);
+
+  myStepper.setSpeed(100);
 }
 
 void loop()
 {
-  myStepper.step(1); // Fait avancer d'un pas   
-
-  delay(500); // On attend une demi seconde
-
-  digitalWrite(13, HIGH);
-
-  delay(500); // On attend une demi seconde
-
   digitalWrite(13, LOW);  
+  myStepper.step(24); // Fait avancer d'un demi tour 
+  delay(1000);
 
+  digitalWrite(13, HIGH);  
+  myStepper.step(24); // Fait avancer d'un demi tour 
+  delay(1000);
 }
