@@ -1,4 +1,9 @@
- 
+/*
+*
+* Test de la compatibilité horloge - stepper
+*
+*/
+
 #include <Time.h>
 #include <TimeAlarms.h>
 #include <AccelStepper.h>
@@ -14,59 +19,36 @@ void setup()
   setTime(8,29,0,1,1,11); // set time to Saturday 8:29:00am Jan 1 2011
   // create the alarms 
   Alarm.alarmRepeat(8,30,0, MorningAlarm);  // 8:30am every day
-  Alarm.alarmRepeat(17,45,0,EveningAlarm);  // 5:45pm every day 
-  Alarm.alarmRepeat(dowSaturday,8,30,30,WeeklyAlarm);  // 8:30:30 every Saturday 
 
- 
-  Alarm.timerRepeat(5, Repeats);            // timer for every 15 seconds    
-  Alarm.timerOnce(10, OnceOnly);             // called once after 10 seconds 
-
+  // Réglages vitesse et accélération du stepper
   stepper.setMaxSpeed(100);
   stepper.setAcceleration(500);
 
+  // Initialisation de la LED
   pinMode(13, OUTPUT);
   digitalWrite(13, HIGH);
 }
 
 void  loop(){  
   digitalClockDisplay();
-  Alarm.delay(1); // wait one second between clock display
+  Alarm.delay(1);
 
+  // Si le moteur a fini sa course, on le déconnecte
   if (stepper.distanceToGo() == 0)
-    {
+  {
     stepper.disableOutputs();   
     digitalWrite(13, LOW);
-    }
+  }
     
-    stepper.run();
+    stepper.run(); // Fonction gérant le stepper
 }
 
 // functions to be called when an alarm triggers:
 void MorningAlarm(){
-  Serial.println("Alarm: - turn lights off");    
-}
-
-void EveningAlarm(){
-  Serial.println("Alarm: - turn lights on");           
-}
-
-void WeeklyAlarm(){
-  Serial.println("Alarm: - its Monday Morning");      
-}
-
-void ExplicitAlarm(){
-  Serial.println("Alarm: - this triggers only at the given date and time");       
-}
-
-void Repeats(){
-  Serial.println("15 second timer"); 
+  Serial.println("Alarm: - turn lights off");   
   stepper.enableOutputs();
   positionActuelle = (positionActuelle + 24)%48;
-  stepper.moveTo(positionActuelle);        
-}
-
-void OnceOnly(){
-  Serial.println("This timer only triggers once");  
+  stepper.moveTo(positionActuelle);         
 }
 
 void digitalClockDisplay()
