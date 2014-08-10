@@ -11,6 +11,8 @@
 #include <TimeAlarms.h>
 #include <AccelStepper.h>
 
+#define VITESSE_STEPPER 1000
+
 // Define a stepper and the pins it will use
 AccelStepper stepper; // Defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
 
@@ -24,8 +26,9 @@ void setup()
   Alarm.alarmRepeat(8,29,10, MorningAlarm);  // 8:30am every day
 
   // Réglages vitesse et accélération du stepper
-  stepper.setMaxSpeed(100);
-  stepper.setAcceleration(500);
+  stepper.setMaxSpeed(1000);
+  //stepper.setAcceleration(500);
+  
 
   // Initialisation de la LED
   pinMode(13, OUTPUT);
@@ -43,6 +46,7 @@ void  loop(){
   	{
   		Alarm.delay(300); // On attend 300ms
   		stepper.moveTo(0); // Et on revient à la position de départ
+  		stepper.setSpeed(VITESSE_STEPPER);
   	}
   	else // Sinon, c'est qu'on doit être retourné à la position de départ
   	{
@@ -51,14 +55,15 @@ void  loop(){
     }
   }
     
-    stepper.run(); // Fonction gérant le stepper
+    stepper.runSpeedToPosition(); // Fonction gérant le stepper
 }
 
 // functions to be called when an alarm triggers:
 void MorningAlarm(){
-  Serial.println("Bon appétit, Schweppes II");   
+  Serial.println("Bon appetit, Schweppes II");   
   stepper.enableOutputs(); // On réactive le moteur
   stepper.moveTo(24); // On retourne la cuillère (un demi tour)
+  stepper.setSpeed(VITESSE_STEPPER);
 }
 
 void digitalClockDisplay()
