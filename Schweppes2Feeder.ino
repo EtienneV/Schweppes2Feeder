@@ -21,7 +21,7 @@ void setup()
   Serial.begin(9600);
   setTime(8,29,0,1,1,11); // set time to Saturday 8:29:00am Jan 1 2011
   // create the alarms 
-  Alarm.alarmRepeat(8,30,0, MorningAlarm);  // 8:30am every day
+  Alarm.alarmRepeat(8,29,10, MorningAlarm);  // 8:30am every day
 
   // Réglages vitesse et accélération du stepper
   stepper.setMaxSpeed(100);
