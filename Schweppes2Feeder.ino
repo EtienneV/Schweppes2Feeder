@@ -39,8 +39,16 @@ void  loop(){
   // Si le moteur a fini sa course, on le déconnecte
   if (stepper.distanceToGo() == 0)
   {
-    stepper.disableOutputs();   
-    digitalWrite(13, LOW);
+  	if(stepper.currentPosition() == 24)
+  	{
+  		Alarm.delay(300);
+  		stepper.moveTo(0);
+  	}
+  	else
+  	{
+    	stepper.disableOutputs();   
+    	digitalWrite(13, LOW);
+    }
   }
     
     stepper.run(); // Fonction gérant le stepper
@@ -48,10 +56,10 @@ void  loop(){
 
 // functions to be called when an alarm triggers:
 void MorningAlarm(){
-  Serial.println("Alarm: - turn lights off");   
+  //Serial.println("Alarm: - turn lights off");   
   stepper.enableOutputs();
-  positionActuelle = (positionActuelle + 24)%48;
-  stepper.moveTo(positionActuelle);         
+  //positionActuelle = (positionActuelle + 24)%48;
+  stepper.moveTo(24);         
 }
 
 void digitalClockDisplay()
