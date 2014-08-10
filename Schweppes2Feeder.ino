@@ -39,14 +39,14 @@ void  loop(){
   // Si le moteur a fini sa course, on le déconnecte
   if (stepper.distanceToGo() == 0)
   {
-  	if(stepper.currentPosition() == 24)
+  	if(stepper.currentPosition() == 24) // Si la cuillère est retournée
   	{
-  		Alarm.delay(300);
-  		stepper.moveTo(0);
+  		Alarm.delay(300); // On attend 300ms
+  		stepper.moveTo(0); // Et on revient à la position de départ
   	}
-  	else
+  	else // Sinon, c'est qu'on doit être retourné à la position de départ
   	{
-    	stepper.disableOutputs();   
+    	stepper.disableOutputs(); // On relache le moteur pour économiser de l'énergie et pour ne pas chauffer  
     	digitalWrite(13, LOW);
     }
   }
@@ -56,10 +56,9 @@ void  loop(){
 
 // functions to be called when an alarm triggers:
 void MorningAlarm(){
-  //Serial.println("Alarm: - turn lights off");   
-  stepper.enableOutputs();
-  //positionActuelle = (positionActuelle + 24)%48;
-  stepper.moveTo(24);         
+  Serial.println("Bon appétit, Schweppes II");   
+  stepper.enableOutputs(); // On réactive le moteur
+  stepper.moveTo(24); // On retourne la cuillère (un demi tour)
 }
 
 void digitalClockDisplay()
