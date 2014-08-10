@@ -19,9 +19,9 @@ boolean etatLed = 0;
 void setup()
 {
   Serial.begin(9600);
-  setTime(8,29,0,1,1,11); // set time to Saturday 8:29:00am Jan 1 2011
+  setTime(18,56,0,1,1,11); // set time to Saturday 8:29:00am Jan 1 2011
   // create the alarms 
-  Alarm.alarmRepeat(8,29,10, MorningAlarm);  // 8:30am every day
+  Alarm.alarmRepeat(18,57,0, MorningAlarm);  // 8:30am every day
 
   Alarm.timerRepeat(1, UneSeconde); // Clignotement de la led toutes les secondes
 
